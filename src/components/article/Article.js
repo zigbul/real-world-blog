@@ -1,0 +1,47 @@
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import TagList from '../tag-list';
+import { format } from 'date-fns';
+import styles from './Article.module.scss';
+import heart from '../../assets/heart.svg';
+import * as actions from '../../redux/actions';
+
+const Article = ({ articleData, slug, getArticleFetch }) => {
+
+   const { title, description, author, tagList, createdAt, favoritesCount } = articleData;
+   const { image, username } = author;
+
+   return (
+      <article className={styles.article}>
+         <div className={styles["article__body"]}>
+            <header className={styles["article__header"]}>
+               <Link 
+                  to={`/articles/:${slug}`} 
+                  className={styles["article__title"]}
+                  onClick={() => getArticleFetch(slug)}
+               >
+                     { title }
+               </Link>
+               <div className={styles.like}>
+                  <img  src={heart} className={styles["like__image"]} alt="heart" />
+                  <span>{ favoritesCount }</span>
+               </div>
+            </header>
+            <TagList tagList={tagList} />
+            <p className={styles["article__description"]}>
+               { description }
+            </p>
+         </div>
+         <div className={styles["autor-block"]}>
+            <div className={styles["autor-block__body"]}>
+               <span className={styles["autor-block__name"]}>{ username }</span>
+               <span className={styles["autor-block__date"]}>{ format(new Date(createdAt), "PP") }</span>
+            </div>
+            <img src={ image } className={styles["autor-block__avatar"]} width="46px" heigh="46px" alt="avatar" />
+         </div>
+      </article>
+   );
+};
+
+export default connect(null, actions)(Article);

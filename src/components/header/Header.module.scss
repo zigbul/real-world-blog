@@ -1,0 +1,89 @@
+.header {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   height: 80px;
+   padding: 0 22px;
+   font-size: 18px;
+   line-height: 28px;
+   color: #000;
+
+   &__name {
+   }
+
+   .panel {
+      display: flex;
+
+      &__sign-in-button {
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         height: 51px;
+         width: 109px;
+         margin-right: 19px;
+         align-items: center;
+         color: #000;
+         background: #fff;
+         border: none;
+      }
+   
+      &__sign-up-button {
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         height: 51px;
+         width: 109px;
+         padding: 0 18px;
+         background: #fff;
+         border: 1px solid #52C41A;
+         border-radius: 5px;
+         color: #52C41A;
+      }
+   }
+
+   .profile-menu {
+      display: flex;
+      align-items: center;
+
+      .create-article-btn {
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         height: 31,1px;
+         width: 112,23px;
+         padding: 0 18px;
+         background: #fff;
+         border: 1px solid #52C41A;
+         border-radius: 5px;
+         color: #52C41A;
+         margin-right: 27px;
+         font-size: 14px;
+      }
+
+      .profile-name {
+         margin-bottom: 0;
+         margin-right: 13px;
+         font-size: 18px;
+         color: #000;
+      }
+
+      .avatar-img {
+         margin-right: 27px;
+      }
+
+      .logout-btn{
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         height: 51px;
+         width: 109px;
+         padding: 0 18px;
+         background: #fff;
+         border: 1px solid #000;
+         border-radius: 5px;
+         color: #000;
+         font-size: 18px;
+      }
+   }
+}
+

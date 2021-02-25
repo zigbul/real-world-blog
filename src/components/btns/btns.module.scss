@@ -1,0 +1,35 @@
+.btns {
+   display: flex;
+   flex-basis: 100%;
+   justify-content: flex-end;
+   position: relative;
+
+   button {
+      width: 78px;
+      height: 31.1px;
+      border-radius: 5px;
+      background: #fff;
+
+      &:not(:last-child) {
+         margin-right: 12px;
+      }
+   }
+
+   .delete-btn {
+      color: #F5222D;
+      border: 1px solid #F5222D;
+   }
+
+   .edit-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      width: 78px;
+      height: 31.1px;
+      border-radius: 5px;
+      background: #fff;
+      color: #52C41A;
+      border: 1px solid #52C41A;
+   }
+}
