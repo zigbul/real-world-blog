@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './btns.module.scss';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';

@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/actions';
 
-const NewArticleForm = ({ articlePostFetch }) => {
+const NewArticleForm = ({ articlePostFetch, onItemSelected }) => {
 
    const [article, setArticle] = useState({});
 
@@ -19,7 +19,10 @@ const NewArticleForm = ({ articlePostFetch }) => {
    };
 
    return (
-      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      <form 
+         className={styles.form} 
+         onSubmit={handleSubmit(onSubmit)}
+      >
          <h2 className={styles.form__header}>Create new article</h2>
          <label className={styles["input-wrapper"]}>
             <span className={styles["input-header"]}>Title</span>
@@ -99,7 +102,7 @@ const NewArticleForm = ({ articlePostFetch }) => {
                </div>
             </ul>
          </label>
-         <input type="submit" className={styles.form__button} value="Send" />
+         <input type="submit" className={styles.form__button} value="Send" onClick={onItemSelected} />
       </form>
    );
 };

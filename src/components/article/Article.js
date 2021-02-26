@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import TagList from '../tag-list';
@@ -7,7 +7,7 @@ import styles from './Article.module.scss';
 import heart from '../../assets/heart.svg';
 import * as actions from '../../redux/actions';
 
-const Article = ({ articleData, slug, getArticleFetch }) => {
+const Article = ({ articleData, slug, getArticleFetch, }) => {
 
    const { title, description, author, tagList, createdAt, favoritesCount } = articleData;
    const { image, username } = author;
@@ -17,7 +17,7 @@ const Article = ({ articleData, slug, getArticleFetch }) => {
          <div className={styles["article__body"]}>
             <header className={styles["article__header"]}>
                <Link 
-                  to={`/articles/:${slug}`} 
+                  to={`/articles/${slug}`} 
                   className={styles["article__title"]}
                   onClick={() => getArticleFetch(slug)}
                >

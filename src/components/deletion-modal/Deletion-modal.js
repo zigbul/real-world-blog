@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './Deletion-modal.module.scss';
 import vector from '../../assets/vector.svg';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import * as actions from '../../redux/actions';
 
 const DeletionModal = ({ setModal, articleDeleteFetch, slug }) => {
@@ -21,11 +22,15 @@ const DeletionModal = ({ setModal, articleDeleteFetch, slug }) => {
                <button className={styles["modal__button"]} onClick={clickHandler}>
                   No
                </button>
-               <button className={styles["modal__button_blue"]}
-                  onClick={() => articleDeleteFetch(slug)}
-               >
-                  Yes
-               </button>
+               <Link to='/articles/'>
+                  <button
+                     className={styles["modal__button_blue"]}
+                     onClick={() => articleDeleteFetch(slug)}
+                  >
+                     Yes
+                  </button>
+               </Link>
+               
             </div>
          </div>
       </div>

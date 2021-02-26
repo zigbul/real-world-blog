@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../redux/actions';
-import { Pagination } from 'antd';
 import 'antd/dist/antd.css';
 import styles from './Articles-list.module.scss';
 import Article from '../article';
 
-const ArticlesList = ({ articles, articlesCount, setOffset, loading }) => {
+const ArticlesList = ({ articles, loading }) => {
+
+   if(loading) {
+      return <h1>Loading...</h1>
+   }
 
    const arrOfArticles = articles.map( ({ slug, ...articleData }) => {
       return (
@@ -18,33 +20,19 @@ const ArticlesList = ({ articles, articlesCount, setOffset, loading }) => {
          </li>
       );
    });
-
-   if(loading) {
-      return <h1>Loading...</h1>
-   }
    
    return (
-      <React.Fragment>
-         <ul className={styles["articles-list"]}>
-            {arrOfArticles}
-         </ul>
-         <Pagination 
-            className={styles.pagination} 
-            defaultCurrent={1}
-            pageSize={5}
-            total={articlesCount}
-            showSizeChanger={false}
-            onChange={(page) => setOffset((page - 1) * 5)}
-         />
-      </React.Fragment>   
+      <ul className={styles["articles-list"]}>
+         {arrOfArticles}
+      </ul>  
    );
 };
 
-const mapStateToProps = ({ articlesCount, articles }) => {
+const mapStateToProps = ({ articles, loading }) => {
    return {
-      articlesCount,
       articles,
+      loading,
    };
 };
 
-export default connect(mapStateToProps, actions)(ArticlesList);
+export default connect(mapStateToProps)(ArticlesList);

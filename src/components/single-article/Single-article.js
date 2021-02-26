@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styles from './Single-article.module.scss';
 import { connect } from 'react-redux';
 import { format } from 'date-fns';
@@ -7,7 +7,7 @@ import Btns from '../btns';
 import heart from '../../assets/heart.svg';
 import * as actions from '../../redux/actions';
 
-const SingleArticle = ({ singleArticle, loading, currentUser }) => {
+const SingleArticle = ({ singleArticle, loading, currentUser, }) => {
 
    if(loading) {
       return <h1>Loading...</h1>

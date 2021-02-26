@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/actions';
 
-const Header = ({ logoutUser, currentUser }) => {
+const Header = ({ logoutUser, currentUser, setOffset }) => {
 
   const { username, avatar } = currentUser;
 
@@ -19,7 +19,7 @@ const Header = ({ logoutUser, currentUser }) => {
   if (currentUser.username) {
     return (
       <header className={styles.header}>
-        <Link to="/articles" className={styles.header__name}>Realworld Blog</Link>
+        <Link to="/articles" className={styles.header__name} onClick={() => setOffset(0)}>Realworld Blog</Link>
         <div className={styles["profile-menu"]}>
           <Link to="/new-article" className={styles["create-article-btn"]}>Create article</Link>
           <Link to="/profile/"><p className={styles["profile-name"]}>{username}</p></Link>

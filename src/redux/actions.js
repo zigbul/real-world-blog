@@ -161,21 +161,18 @@ export const userUpdateFetch = user => {
 export const articlePostFetch = article => {
   return async dispatch => {
     const token = localStorage.token;
-    const resp = await fetch("https://conduit.productionready.io/api/articles", {
+    return fetch("https://conduit.productionready.io/api/articles", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json; charset=utf-8',
             'Authorization': `Token ${token}`,
         },
         body: JSON.stringify({ article })
-      });
-      const data = await resp.json();
-      if (data.message) {
-        alert(data.message);
-      } else {
-        console.log(data);
-        dispatch(setSlug(data.article.slug));
-      };
+      })
+      .then( res => res.json())
+      .then( data => dispatch(setSlug(data.article.slug)))
+      .then( () => dispatch(getArticles(0)))
+      .catch( e => console.log(e));
   };
 };
 
@@ -202,6 +199,7 @@ export const articleUpdateFetch = (article, slug) => {
 
 export const articleDeleteFetch = (slug) => {
   return dispatch => {
+    dispatch(startFetching());
     const token = localStorage.token;
     return fetch(`https://conduit.productionready.io/api/articles/${slug}`, {
       method: "DELETE",
@@ -211,6 +209,7 @@ export const articleDeleteFetch = (slug) => {
         },
     })
     .then(() => dispatch(setModal(false)))
+    .then( () => dispatch(getArticles(0)))
     .catch( e => console.log(e));
   }
 }
