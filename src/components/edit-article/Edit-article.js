@@ -82,7 +82,7 @@ const EditArticle = ({ singleArticle, articleUpdateFetch, offset }) => {
                      ADD
                   </button>
                </div>
-               <div className={styles["tag-wrapper"]}>
+               {/* <div className={styles["tag-wrapper"]}>
                   <input 
                      type="text"
                      placeholder="Tag"
@@ -100,7 +100,7 @@ const EditArticle = ({ singleArticle, articleUpdateFetch, offset }) => {
                   >
                      ADD
                   </button>
-               </div>
+               </div> */}
             </ul>
          </label>
          <input type="submit" className={styles.form__button} value="Send" />
