@@ -4,22 +4,30 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/actions';
 
-const Header = ({ logoutUser, currentUser, setOffset }) => {
+const Header = ({ logoutUser, currentUser, getArticles, offset }) => {
 
   const { username, avatar } = currentUser;
 
   const handleClick = event => {
-    event.preventDefault()
+    event.preventDefault();
     // Удаление token из localStorage
-    localStorage.removeItem("token")
+    localStorage.clear();
     // удаление из Redux хранилица
     logoutUser();
-  }
+  };
+
+
 
   if (currentUser.username) {
     return (
       <header className={styles.header}>
-        <Link to="/articles" className={styles.header__name} onClick={() => setOffset(0)}>Realworld Blog</Link>
+        <Link 
+          to="/articles" 
+          className={styles.header__name}
+          onClick={() => getArticles(offset)}
+        >
+            Realworld Blog
+        </Link> 
         <div className={styles["profile-menu"]}>
           <Link to="/new-article" className={styles["create-article-btn"]}>Create article</Link>
           <Link to="/profile/"><p className={styles["profile-name"]}>{username}</p></Link>
@@ -27,24 +35,31 @@ const Header = ({ logoutUser, currentUser, setOffset }) => {
           <Link to="/sign-in/" className={styles["logout-btn"]} onClick={handleClick}>Log out</Link>
         </div>
     </header>
-    )
+    );
   } else {
     return (
       <header className={styles.header}>
-        <Link to="/articles" className={styles.header__name}>Realworld Blog</Link>
+        <Link 
+          to="/articles" 
+          className={styles.header__name}
+          onClick={() => getArticles(offset)}
+        >
+            Realworld Blog
+        </Link>
         <div className={styles.panel}>
           <Link to="/sign-in/" className={styles["panel__sign-in-button"]}>Sign In</Link>
           <Link to="/sign-up/" className={styles["panel__sign-up-button"]}>Sign Up</Link>
         </div>
     </header>
-    )
+    );
   }
 };
 
-const mapStateToProps = ({currentUser}) => {
+const mapStateToProps = ({currentUser, offset}) => {
   return {
     currentUser,
-  }
-}
+    offset,
+  };
+};
 
 export default connect(mapStateToProps, actions)(Header);

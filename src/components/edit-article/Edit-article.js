@@ -4,9 +4,11 @@ import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/actions';
 
-const EditArticle = ({ singleArticle, slug, articleUpdateFetch }) => {
+const EditArticle = ({ singleArticle, articleUpdateFetch, offset }) => {
 
-   const [article, setArticle] = useState({body: singleArticle.body, title: singleArticle.title});
+   const { body, title, slug } = singleArticle;
+
+   const [article, setArticle] = useState({body: body, title: title});
 
    const { register, handleSubmit, errors } = useForm();
 
@@ -15,7 +17,7 @@ const EditArticle = ({ singleArticle, slug, articleUpdateFetch }) => {
    };
 
    const onSubmit = () => {
-      articleUpdateFetch(article, slug);
+      articleUpdateFetch(article, slug, offset);
    };
 
    return (
@@ -106,11 +108,11 @@ const EditArticle = ({ singleArticle, slug, articleUpdateFetch }) => {
    );
 };
 
-const mapStateToProps = ({ singleArticle, slug }) => {
+const mapStateToProps = ({ singleArticle, offset }) => {
    return {
       singleArticle,
-      slug,
-   }
-}
+      offset,
+   };
+};
 
 export default connect(mapStateToProps, actions)(EditArticle);

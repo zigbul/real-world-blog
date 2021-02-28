@@ -30,23 +30,25 @@
       align-items: center;
       margin-bottom: 5px;
 
-      .like {
-         display: flex;
-         align-items: center;
-         font-size: 12px;
-         line-height: 22px;
+      // .like {
+      //    display: flex;
+      //    align-items: center;
+      //    font-size: 12px;
+      //    line-height: 22px;
       
-         &__image {
-            margin-right: 5px;
-         }
-      }
+      //    &__image {
+      //       margin-right: 5px;
+      //    }
+      // }
    }
 
    &__title {
+      font-family: 'Inter', sans-serif;
       margin-right: 13px;
+      margin-bottom: 0;
       color: #1890FF;
       font-size: 20px;
-      line-height: 28px;   
+      line-height: 28px;
    }
 
    &__description {

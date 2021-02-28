@@ -5,11 +5,12 @@ import TagList from '../tag-list';
 import { format } from 'date-fns';
 import styles from './Article.module.scss';
 import heart from '../../assets/heart.svg';
+import redHeart from '../../assets/redheart.svg';
 import * as actions from '../../redux/actions';
 
-const Article = ({ articleData, slug, getArticleFetch, }) => {
+const Article = ({ articleData, setSingleArticle }) => {
 
-   const { title, description, author, tagList, createdAt, favoritesCount } = articleData;
+   const { title, description, author, tagList, createdAt, favoritesCount, slug } = articleData;
    const { image, username } = author;
 
    return (
@@ -19,12 +20,12 @@ const Article = ({ articleData, slug, getArticleFetch, }) => {
                <Link 
                   to={`/articles/${slug}`} 
                   className={styles["article__title"]}
-                  onClick={() => getArticleFetch(slug)}
+                  onClick={() => setSingleArticle(articleData)}
                >
                      { title }
                </Link>
                <div className={styles.like}>
-                  <img  src={heart} className={styles["like__image"]} alt="heart" />
+                  <img  src={localStorage.getItem(slug) ? redHeart : heart} className={styles["like__image"]} alt="heart" />
                   <span>{ favoritesCount }</span>
                </div>
             </header>

@@ -18,6 +18,10 @@ export const setOffset = (offset) => {
   return { type: "SET_OFFSET", offset };
 };
 
+export const setPage = (page) => {
+  return { type: "SET_PAGE", page };
+};
+
 export const setSlug = (slug) => {
   return { type: "SET_SLUG", slug };
 };
@@ -30,18 +34,23 @@ export const setModal = (boolean) => {
   return { type: "SET_MODAL", boolean };
 };
 
-export const getArticles = (offset) => {
-  return (dispatch) => {
-    dispatch(startFetching());
+export const setValidate = (boolean) => {
+  return { type: "SET_VALIDATE", boolean };
+};
 
-    fetch(`https://conduit.productionready.io/api/articles?limit=5&offset=${offset}`)
-      .then( res => res.json())
-      .then( data => {
-        dispatch(setArticles(data.articles));
-        dispatch(setArticlesCount(data.articlesCount));
-        dispatch(fetchingSuccess());
-      })
-      .catch( e => console.log(e));
+export const getArticles = (offset) => {
+  return async (dispatch) => {
+    dispatch(startFetching());
+    dispatch(setOffset(offset));
+    try {
+      const res = await fetch(`https://conduit.productionready.io/api/articles?limit=5&offset=${offset}`);
+      const data = await res.json();
+      dispatch(setArticles(data.articles));
+      dispatch(setArticlesCount(data.articlesCount));
+      return dispatch(fetchingSuccess());
+    } catch (e) {
+      return console.log(e);
+    }
   };
 };
 
@@ -81,13 +90,9 @@ export const userLoginFetch = user => {
     })
       .then(resp => resp.json())
       .then(data => {
-        if (data.message) {
-          alert(data.message);
-        } else {
-          localStorage.setItem("token", data.user.token)
-          dispatch(loginUser(data.user))
-        }
-      })
+        localStorage.setItem("token", data.user.token);
+        dispatch(loginUser(data.user));
+    })
       .catch( e => console.log(e));
   };
 };
@@ -126,40 +131,44 @@ export const getProfileFetch = () => {
         .then(data => {
           if (data.message) {
              // Будет ошибка если token не дествительный
-            localStorage.removeItem("token")
+            localStorage.clear();
           } else {
             dispatch(loginUser(data.user))
           }
-        })
+      })
         .catch( e => console.log(e));
     };
   };
 };
 
 export const userUpdateFetch = user => {
-  return async dispatch => {
+  return dispatch => {
+    dispatch(startFetching());
+    dispatch(setValidate(true));
     const token = localStorage.token;
-    const resp = await fetch("https://conduit.productionready.io/api/user", {
-        method: "PUT",
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-            'Authorization': `Token ${token}`,
-        },
-        body: JSON.stringify({ user })
-      });
-      const data = await resp.json();
-      if (data.message) {
-        alert(data.message);
-      } else {
-        console.log(data);
+    return fetch("https://conduit.productionready.io/api/user", {
+      method: "PUT",
+      headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Authorization': `Token ${token}`,
+      },
+      body: JSON.stringify({ user })
+    })
+      .then( res => res.json())
+      .then( data => {
         localStorage.setItem("token", data.user.token);
         dispatch(loginUser(data.user));
-      };
+    })
+      .then( () => dispatch(getArticles(0)))
+      .then( () => dispatch(setValidate(false)))
+      .catch( e => console.log(e));
   };
 }; 
 
 export const articlePostFetch = article => {
-  return async dispatch => {
+  return dispatch => {
+    dispatch(startFetching());
+    dispatch(setValidate(true));
     const token = localStorage.token;
     return fetch("https://conduit.productionready.io/api/articles", {
         method: "POST",
@@ -169,35 +178,36 @@ export const articlePostFetch = article => {
         },
         body: JSON.stringify({ article })
       })
+        .then( res => res.json())
+        .then( () => dispatch(setOffset(0)))
+        .then( () => dispatch(setPage(1)))
+        .then( () => dispatch(getArticles(0)))
+        .then( () => dispatch(setValidate(false)))
+        .catch( e => console.log(e));
+  };
+};
+
+export const articleUpdateFetch = (article, slug, offset) => {
+  return dispatch => {
+    dispatch(startFetching());
+    dispatch(setValidate(true));
+    const token = localStorage.token;
+    return fetch(`https://conduit.productionready.io/api/articles/${slug}`, {
+      method: "PUT",
+      headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Authorization': `Token ${token}`,
+      },
+      body: JSON.stringify({ article })
+    })
       .then( res => res.json())
-      .then( data => dispatch(setSlug(data.article.slug)))
-      .then( () => dispatch(getArticles(0)))
+      .then( () => dispatch(getArticles(offset)))
+      .then( () => dispatch(setValidate(false)))
       .catch( e => console.log(e));
   };
 };
 
-export const articleUpdateFetch = (article, slug) => {
-  return async dispatch => {
-    const token = localStorage.token;
-    const resp = await fetch(`https://conduit.productionready.io/api/articles/${slug}`, {
-        method: "PUT",
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-            'Authorization': `Token ${token}`,
-        },
-        body: JSON.stringify({ article })
-      });
-      const data = await resp.json();
-      if (data.message) {
-        alert(data.message);
-      } else {
-        console.log(data);
-        dispatch(setSlug(data.article.slug));
-      };
-  };
-};
-
-export const articleDeleteFetch = (slug) => {
+export const articleDeleteFetch = (slug, offset) => {
   return dispatch => {
     dispatch(startFetching());
     const token = localStorage.token;
@@ -208,11 +218,45 @@ export const articleDeleteFetch = (slug) => {
             'Authorization': `Token ${token}`,
         },
     })
-    .then(() => dispatch(setModal(false)))
-    .then( () => dispatch(getArticles(0)))
-    .catch( e => console.log(e));
-  }
-}
+        .then(() => dispatch(setModal(false)))
+        .then( () => dispatch(getArticles(offset)))
+        .catch( e => console.log(e));
+  };
+};
+
+export const favoriteArticle = (slug, offset) => {
+  return dispatch => {
+    const token = localStorage.token;
+    return fetch(`https://conduit.productionready.io/api/articles/${slug}/favorite`, {
+      method: "POST",
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Authorization': `Token ${token}`,
+        },
+    })
+      .then( res => res.json())
+      .then( data => {
+        dispatch(articleUpdateFetch(data, slug, offset));
+      })
+      .catch( e => console.log(e));
+  };
+};
+
+export const unFavoriteArticle = (slug, offset) => {
+  return dispatch => {
+    const token = localStorage.token;
+    return fetch(`https://conduit.productionready.io/api/articles/${slug}/favorite`, {
+      method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Authorization': `Token ${token}`,
+        },
+    })
+      .then( res => res.json())
+      .then( data => dispatch(articleUpdateFetch(data, slug, offset)))
+      .catch( e => console.log(e));
+  };
+};
 
 export const logoutUser = () => ({
   type: 'LOGOUT_USER'

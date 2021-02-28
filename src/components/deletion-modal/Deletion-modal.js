@@ -5,7 +5,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as actions from '../../redux/actions';
 
-const DeletionModal = ({ setModal, articleDeleteFetch, slug }) => {
+const DeletionModal = ({ setModal, articleDeleteFetch, offset, singleArticle }) => {
+
+   const { slug } = singleArticle;
 
    const clickHandler = () => {
       setModal(false);
@@ -25,7 +27,7 @@ const DeletionModal = ({ setModal, articleDeleteFetch, slug }) => {
                <Link to='/articles/'>
                   <button
                      className={styles["modal__button_blue"]}
-                     onClick={() => articleDeleteFetch(slug)}
+                     onClick={() => articleDeleteFetch(slug, offset)}
                   >
                      Yes
                   </button>
@@ -37,10 +39,11 @@ const DeletionModal = ({ setModal, articleDeleteFetch, slug }) => {
    );
 };
 
-const mapStateToProps = ({ slug }) => {
+const mapStateToProps = ({ offset, singleArticle }) => {
    return {
-      slug,
-   }
-}
+      offset,
+      singleArticle,
+   };
+};
 
 export default connect(mapStateToProps, actions)(DeletionModal);

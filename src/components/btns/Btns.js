@@ -28,9 +28,8 @@ const Btns = ({ slug, setModal, modal }) => {
    );
 };
 
-const mapStateToProps = ({ slug, modal }) => {
+const mapStateToProps = ({ modal }) => {
    return {
-      slug,
       modal,
    };
 };

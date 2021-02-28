@@ -10,13 +10,15 @@ const ArticlesList = ({ articles, loading }) => {
       return <h1>Loading...</h1>
    }
 
-   const arrOfArticles = articles.map( ({ slug, ...articleData }) => {
+   const arrOfArticles = articles.map( (articleData) => {
       return (
          <li 
-            key={slug} 
+            key={articleData.slug} 
             className={styles["article"]}
          >
-            <Article articleData={articleData} slug={slug} />
+            <Article 
+               articleData={articleData}  
+            />
          </li>
       );
    });

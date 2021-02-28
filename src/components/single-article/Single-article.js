@@ -4,19 +4,15 @@ import { connect } from 'react-redux';
 import { format } from 'date-fns';
 import TagList from '../tag-list';
 import Btns from '../btns';
-import heart from '../../assets/heart.svg';
 import * as actions from '../../redux/actions';
+import Like from '../like';
 
-const SingleArticle = ({ singleArticle, loading, currentUser, }) => {
+const SingleArticle = ({ singleArticle, currentUser }) => {
 
-   if(loading) {
-      return <h1>Loading...</h1>
-   }
-
-   const { title, description, author, tagList, createdAt, favoritesCount, body } = singleArticle;
+   const { title, description, author, tagList, createdAt, favoritesCount, body, favorited, slug } = singleArticle;
    const { image, username } = author;
 
-   const btnsBlock = (username === currentUser.username) ? <Btns /> : null;
+   const btnsBlock = (username === currentUser.username) ? <Btns slug={slug} /> : null;
 
    return (
       <article className={styles.article}>
@@ -25,10 +21,11 @@ const SingleArticle = ({ singleArticle, loading, currentUser, }) => {
                <h2 className={styles["article__title"]}>
                   { title }
                </h2>
-               <div className={styles.like}>
-                  <img  src={heart} className={styles["like__image"]} alt="heart" />
-                  <span>{ favoritesCount }</span>
-               </div>
+               <Like 
+                  count={favoritesCount}
+                  favorited={favorited}
+                  slug={slug}
+               />
             </header>
             <TagList tagList={tagList} />
             <p className={styles["article__description"]}>

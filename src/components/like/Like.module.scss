@@ -1,0 +1,10 @@
+.like {
+   display: flex;
+   align-items: center;
+   font-size: 12px;
+   line-height: 22px;
+
+   &__image {
+      margin-right: 5px;
+   }
+}
