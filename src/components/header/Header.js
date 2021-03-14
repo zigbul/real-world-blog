@@ -3,10 +3,11 @@ import styles from './Header.module.scss';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/actions';
+import defaultAvatar from '../../assets/defaultAvatar.svg';
 
 const Header = ({ logoutUser, currentUser, getArticles, offset }) => {
 
-  const { username, avatar } = currentUser;
+  const { username, image } = currentUser;
 
   const handleClick = event => {
     event.preventDefault();
@@ -31,7 +32,7 @@ const Header = ({ logoutUser, currentUser, getArticles, offset }) => {
         <div className={styles["profile-menu"]}>
           <Link to="/new-article" className={styles["create-article-btn"]}>Create article</Link>
           <Link to="/profile/"><p className={styles["profile-name"]}>{username}</p></Link>
-          <Link to="/profile/"><img className={styles["avatar-img"]} scr={avatar} alt="avatar" width="46px" height="46px" /></Link>
+          <Link to="/profile/"><img className={styles["avatar-img"]} scr={image ? image : defaultAvatar} alt="avatar" width="46px" height="46px" /></Link>
           <Link to="/sign-in/" className={styles["logout-btn"]} onClick={handleClick}>Log out</Link>
         </div>
     </header>

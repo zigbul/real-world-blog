@@ -82,25 +82,6 @@ const EditArticle = ({ singleArticle, articleUpdateFetch, offset }) => {
                      ADD
                   </button>
                </div>
-               {/* <div className={styles["tag-wrapper"]}>
-                  <input 
-                     type="text"
-                     placeholder="Tag"
-                     name="tag"
-                  />
-                  <button 
-                     className={styles["delete-btn"]}
-                     type="button" 
-                  >
-                     DELETE
-                  </button>
-                  <button
-                     className={styles["add-btn"]} 
-                     type="button" 
-                  >
-                     ADD
-                  </button>
-               </div> */}
             </ul>
          </label>
          <input type="submit" className={styles.form__button} value="Send" />
