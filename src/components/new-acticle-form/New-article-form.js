@@ -3,10 +3,54 @@ import styles from './New-article-form.module.scss';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/actions';
+import TagButtonList from '../tag-button-list';
+import { setID } from '../../helper';
 
 const NewArticleForm = ({ articlePostFetch }) => {
 
    const [article, setArticle] = useState({});
+   const [tags, setTags] = useState([createTag()]);
+
+   function createTag() {
+      return {
+         value: '',
+         id: setID(),
+      }
+   }
+
+   function addTag(id, value) {
+      const newArr = tags.map( tag => {
+         if(tag.id === id) {
+            return tag = {...tag, value: value};
+         }
+         return tag;
+      })
+		setTags([...newArr, createTag()]);
+      setArticle({...article, tagList: tags.map(tag => tag.value)});
+	}
+
+   function deleteTag(id) {
+      const newArr = tags.filter( tag => {
+         if (tag.id !== id) {
+            return tag;
+         }
+      })
+      if (tags.length === 1) {
+         setTags([createTag()]);
+      } else {
+         setTags(newArr);
+      }
+   }
+
+   // function onValueChange(e, id) {
+   //    const newArr = tags.filter( tag => {
+   //       if (tag.id === id) {
+   //          return tag = {...tag, value: e.target.value}
+   //       }
+   //       return tag;
+   //    })
+   //    setTags(newArr);
+   // }
 
    const { register, handleSubmit, errors } = useForm();
 
@@ -61,46 +105,12 @@ const NewArticleForm = ({ articlePostFetch }) => {
          </label>
          <label className={styles["input-wrapper"]}>
             <span>Tags</span>
-            <ul className={styles["tag-list"]}>
-               <div className={styles["tag-wrapper"]}>
-                  <input 
-                     type="text"
-                     placeholder="Tag"
-                     name="tag"
-                  />
-                  <button 
-                     className={styles["delete-btn"]}
-                     type="button" 
-                  >
-                     DELETE
-                  </button>
-                  <button
-                     className={styles["add-btn"]} 
-                     type="button" 
-                  >
-                     ADD
-                  </button>
-               </div>
-               <div className={styles["tag-wrapper"]}>
-                  <input 
-                     type="text"
-                     placeholder="Tag"
-                     name="tag"
-                  />
-                  <button 
-                     className={styles["delete-btn"]}
-                     type="button" 
-                  >
-                     DELETE
-                  </button>
-                  <button
-                     className={styles["add-btn"]} 
-                     type="button" 
-                  >
-                     ADD
-                  </button>
-               </div>
-            </ul>
+            <TagButtonList 
+               tags={tags}
+               addTag={addTag}
+               deleteTag={deleteTag}
+               // onValueChange={onValueChange}
+            />
          </label>
          <input type="submit" className={styles.form__button} value="Send" />
       </form>
