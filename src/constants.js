@@ -1,0 +1,12 @@
+export const START_FETCHING = "START_FETCHING";
+export const FETCHING_SUCCESS = "FETCHING_SUCCESS";
+export const SET_ARTICLES = "SET_ARTICLES";
+export const SET_ARTICLES_COUNT = "SET_ARTICLES_COUNT";
+export const SET_OFFSET = "SET_OFFSET";
+export const SET_PAGE = "SET_PAGE";
+export const SET_SINGLE_ARTICLE = "SET_SINGLE_ARTICLE";
+export const SET_MODAL = "SET_MODAL";
+export const SET_VALIDATE = "SET_VALIDATE";
+export const LOGIN_USER = "LOGIN_USER";
+export const LOGOUT_USER = "LOGOUT_USER";
+export const API_BASE_URL = "https://conduit.productionready.io/api";

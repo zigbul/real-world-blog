@@ -1,41 +1,39 @@
+import * as constant from '../constants';
+
 export const startFetching = () => {
-  return { type: "START_FETCHING" };
+  return { type: constant.START_FETCHING };
 };
 
 export const fetchingSuccess = () => {
-  return { type: "FETCHING_SUCCESS"};
+  return { type: constant.FETCHING_SUCCESS};
 };
 
 export const setArticles = (articles) => {
-  return { type: "SET_ARTICLES", articles };
+  return { type: constant.SET_ARTICLES, articles };
 };
 
 export const setArticlesCount = (articlesCount) => {
-  return { type: "SET_ARTICLES_COUNT", articlesCount }
+  return { type: constant.SET_ARTICLES_COUNT, articlesCount }
 }
 
 export const setOffset = (offset) => {
-  return { type: "SET_OFFSET", offset };
+  return { type: constant.SET_OFFSET, offset };
 };
 
 export const setPage = (page) => {
-  return { type: "SET_PAGE", page };
-};
-
-export const setSlug = (slug) => {
-  return { type: "SET_SLUG", slug };
+  return { type: constant.SET_PAGE, page };
 };
 
 export const setSingleArticle = (singleArticle) => {
-  return { type: "SET_SINGLE_ARTICLE", singleArticle };
+  return { type: constant.SET_SINGLE_ARTICLE, singleArticle };
 };
 
 export const setModal = (boolean) => {
-  return { type: "SET_MODAL", boolean };
+  return { type: constant.SET_MODAL, boolean };
 };
 
 export const setValidate = (boolean) => {
-  return { type: "SET_VALIDATE", boolean };
+  return { type: constant.SET_VALIDATE, boolean };
 };
 
 export const getArticles = (offset) => {
@@ -43,7 +41,7 @@ export const getArticles = (offset) => {
     dispatch(startFetching());
     dispatch(setOffset(offset));
     try {
-      const res = await fetch(`https://conduit.productionready.io/api/articles?limit=5&offset=${offset}`);
+      const res = await fetch(`${constant.API_BASE_URL}/articles?limit=5&offset=${offset}`);
       const data = await res.json();
       dispatch(setArticles(data.articles));
       dispatch(setArticlesCount(data.articlesCount));
@@ -56,7 +54,7 @@ export const getArticles = (offset) => {
 
 export const userPostFetch = user => {
   return async dispatch => {
-    const resp = await fetch("https://conduit.productionready.io/api/users", {
+    const resp = await fetch(`${constant.API_BASE_URL}/users`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json; charset=utf-8',
@@ -75,13 +73,13 @@ export const userPostFetch = user => {
 };
 
 const loginUser = userObj => ({
-  type: 'LOGIN_USER',
+  type: constant.LOGIN_USER,
   userObj
 });
 
 export const userLoginFetch = user => {
   return dispatch => {
-    return fetch("https://conduit.productionready.io/api/users/login", {
+    return fetch(`${constant.API_BASE_URL}/users/login`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
@@ -100,8 +98,8 @@ export const userLoginFetch = user => {
 export const getArticleFetch = (slug) => {
   return (dispatch) => {
     dispatch(startFetching());
-    dispatch(setSlug(slug));
-    return fetch(`https://conduit.productionready.io/api/articles/${slug}`, {
+    // dispatch(setSlug(slug));
+    return fetch(`${constant.API_BASE_URL}/articles/${slug}`, {
       method: "GET",
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
@@ -120,7 +118,7 @@ export const getProfileFetch = () => {
   return dispatch => {
     const token = localStorage.token;
     if (token) {
-      return fetch("https://conduit.productionready.io/api/user", {
+      return fetch(`${constant.API_BASE_URL}/user`, {
         method: "GET",
         headers: {
           'Content-Type': 'application/json; charset=utf-8',
@@ -146,7 +144,7 @@ export const userUpdateFetch = user => {
     dispatch(startFetching());
     dispatch(setValidate(true));
     const token = localStorage.token;
-    return fetch("https://conduit.productionready.io/api/user", {
+    return fetch(`${constant.API_BASE_URL}/user`, {
       method: "PUT",
       headers: {
           'Content-Type': 'application/json; charset=utf-8',
@@ -170,7 +168,7 @@ export const articlePostFetch = article => {
     dispatch(startFetching());
     dispatch(setValidate(true));
     const token = localStorage.token;
-    return fetch("https://conduit.productionready.io/api/articles", {
+    return fetch(`${constant.API_BASE_URL}/articles`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json; charset=utf-8',
@@ -192,7 +190,7 @@ export const articleUpdateFetch = (article, slug, offset) => {
     dispatch(startFetching());
     dispatch(setValidate(true));
     const token = localStorage.token;
-    return fetch(`https://conduit.productionready.io/api/articles/${slug}`, {
+    return fetch(`${constant.API_BASE_URL}/articles/${slug}`, {
       method: "PUT",
       headers: {
           'Content-Type': 'application/json; charset=utf-8',
@@ -211,7 +209,7 @@ export const articleDeleteFetch = (slug, offset) => {
   return dispatch => {
     dispatch(startFetching());
     const token = localStorage.token;
-    return fetch(`https://conduit.productionready.io/api/articles/${slug}`, {
+    return fetch(`${constant.API_BASE_URL}/articles/${slug}`, {
       method: "DELETE",
         headers: {
             'Content-Type': 'application/json; charset=utf-8',
@@ -227,7 +225,7 @@ export const articleDeleteFetch = (slug, offset) => {
 export const favoriteArticle = (slug, offset) => {
   return dispatch => {
     const token = localStorage.token;
-    return fetch(`https://conduit.productionready.io/api/articles/${slug}/favorite`, {
+    return fetch(`${constant.API_BASE_URL}/articles/${slug}/favorite`, {
       method: "POST",
         headers: {
             'Content-Type': 'application/json; charset=utf-8',
@@ -245,7 +243,7 @@ export const favoriteArticle = (slug, offset) => {
 export const unFavoriteArticle = (slug, offset) => {
   return dispatch => {
     const token = localStorage.token;
-    return fetch(`https://conduit.productionready.io/api/articles/${slug}/favorite`, {
+    return fetch(`${constant.API_BASE_URL}/articles/${slug}/favorite`, {
       method: "DELETE",
         headers: {
             'Content-Type': 'application/json; charset=utf-8',
@@ -259,5 +257,5 @@ export const unFavoriteArticle = (slug, offset) => {
 };
 
 export const logoutUser = () => ({
-  type: 'LOGOUT_USER'
+  type: constant.LOGOUT_USER,
 });
