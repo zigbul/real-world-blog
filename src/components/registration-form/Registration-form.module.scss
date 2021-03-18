@@ -114,6 +114,21 @@
       margin-bottom: 8px;
       border-radius: 4px;
       border: none;
+
+      &_disabled {
+         display: inline-block;
+         background: grey;
+         font-size: 16px;
+         color: #fff;
+         line-height: 20px;
+         padding: 8px 16px;
+         width: 319px;
+         height: 40px;
+         margin-top: 21px;
+         margin-bottom: 8px;
+         border-radius: 4px;
+         border: none;
+      }
    }
 
    .link-block {

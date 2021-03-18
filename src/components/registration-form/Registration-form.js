@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Registration-form.module.scss';
 import { Link } from 'react-router-dom';
 import { userPostFetch } from '../../redux/actions';
@@ -11,8 +11,21 @@ const RegistrationForm = ({ userPostFetch }) => {
    const [userInfo, setUserInfo] = useState({username: '', email: '', password: '',});
    const [repeatPassword, setRepeatPassword] = useState('');
    const [passCompare, setPassCompare] = useState(null);
+   const [checked, setChecked] = useState(false);
+   const [disabled, setDisabled] = useState(false);
 
    const { register, handleSubmit, errors } = useForm();
+
+   useEffect(() => {
+      let formChecker = {...userInfo, checked, repeatPassword}
+      for (let key in formChecker) {
+         if (!formChecker[key]) {
+            setDisabled(true);
+            return
+         }
+         setDisabled(false);
+      }
+   }, [checked, repeatPassword, userInfo]);
 
    const handleChange = event => {
       if (event.target.name === 'repeatPassword') {
@@ -92,13 +105,20 @@ const RegistrationForm = ({ userPostFetch }) => {
             <input
                type="checkbox"
                name="checkbox"
+               checked={checked}
+               onChange={() => setChecked(!checked)}
                ref={register({ required: true, })} 
             />
             <span className={errors.checkbox && styles["span_red-border"]} />
             <p>I agree to the processing of my personal information</p>
             {errors.checkbox && <p className={styles["input-error"]}>You must agree before registration</p>}
          </label>
-         <input type="submit" className={styles.form__button} value="Create" />
+         <input 
+            type="submit"
+            className={disabled ? styles.form__button_disabled : styles.form__button} 
+            value="Create" 
+            disabled={disabled} 
+         />
          <div className={styles["link-block"]}>
             <p>Already have an account?</p><Link to="/sign-in" className={styles.link}>Sign In.</Link>
          </div>
