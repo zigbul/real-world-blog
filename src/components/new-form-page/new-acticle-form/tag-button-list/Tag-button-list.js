@@ -1,5 +1,5 @@
 import React from 'react';
-import TagButton from '../tag-button';
+import TagButton from './tag-button';
 import styles from './Tag-button-list.module.scss';
 
 const TagButtonList = ({ tags, addTag, deleteTag, onValueChange }) => {

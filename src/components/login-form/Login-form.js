@@ -18,6 +18,7 @@ const LoginForm = ({ userLoginFetch }) => {
 
    const onSubmit = () => {
       userLoginFetch(user);
+      localStorage.setItem('password', password);
    };
 
    const {email, password} = user;

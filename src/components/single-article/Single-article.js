@@ -2,10 +2,10 @@ import React from 'react';
 import styles from './Single-article.module.scss';
 import { connect } from 'react-redux';
 import { format } from 'date-fns';
-import TagList from '../tag-list';
-import Btns from '../btns';
+import TagList from '../../domain/tag-list';
+import Btns from './btns';
 import * as actions from '../../redux/actions';
-import Like from '../like';
+import Like from '../../domain/like';
 
 const SingleArticle = ({ singleArticle, currentUser }) => {
 

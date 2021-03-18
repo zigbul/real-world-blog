@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import 'antd/dist/antd.css';
 import styles from './Articles-list.module.scss';
-import Article from '../article';
+import Article from './article';
 
 const ArticlesList = ({ articles, loading }) => {
 
