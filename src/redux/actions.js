@@ -1,4 +1,6 @@
-import * as constant from '../constants';
+import * as constant from '../constants.js';
+import { token } from '../helper';
+import { myBlogService } from '../service';
 
 export const startFetching = () => {
   return { type: constant.START_FETCHING };
@@ -36,12 +38,21 @@ export const setValidate = (boolean) => {
   return { type: constant.SET_VALIDATE, boolean };
 };
 
-export const getArticles = (offset) => {
+const loginUser = userObj => ({
+  type: constant.LOGIN_USER,
+  userObj
+});
+
+export const logoutUser = () => ({
+  type: constant.LOGOUT_USER,
+});
+
+export const getArticles = offset => {
   return async (dispatch) => {
     dispatch(startFetching());
     dispatch(setOffset(offset));
     try {
-      const res = await fetch(`${constant.API_BASE_URL}/articles?limit=5&offset=${offset}`);
+      const res = await myBlogService.getArticles(offset);
       const data = await res.json();
       dispatch(setArticles(data.articles));
       dispatch(setArticlesCount(data.articlesCount));
@@ -54,38 +65,20 @@ export const getArticles = (offset) => {
 
 export const userPostFetch = user => {
   return async dispatch => {
-    const resp = await fetch(`${constant.API_BASE_URL}/users`, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-        },
-        body: JSON.stringify({ user })
-      });
-      const data = await resp.json();
-      if (data.message) {
-        alert(data.message);
-      } else {
-        console.log(data);
-        localStorage.setItem("token", data.user.token);
-        dispatch(loginUser(data.user));
-      };
+    const resp = await myBlogService.userPostFetch(user);
+    const data = await resp.json();
+    if (data.message) {
+      alert(data.message);
+    } else {
+      localStorage.setItem("token", data.user.token);
+      dispatch(loginUser(data.user));
+    };
   };
 };
 
-const loginUser = userObj => ({
-  type: constant.LOGIN_USER,
-  userObj
-});
-
 export const userLoginFetch = user => {
   return dispatch => {
-    return fetch(`${constant.API_BASE_URL}/users/login`, {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-      },
-      body: JSON.stringify({user})
-    })
+    return myBlogService.userLoginFetch(user)
       .then(resp => resp.json())
       .then(data => {
         localStorage.setItem("token", data.user.token);
@@ -98,13 +91,7 @@ export const userLoginFetch = user => {
 export const getArticleFetch = (slug) => {
   return (dispatch) => {
     dispatch(startFetching());
-    // dispatch(setSlug(slug));
-    return fetch(`${constant.API_BASE_URL}/articles/${slug}`, {
-      method: "GET",
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-      }
-    })
+    return myBlogService.getArticleFetch(slug)
       .then(resp => resp.json())
       .then(data => {
         dispatch(setSingleArticle(data.article));
@@ -116,15 +103,8 @@ export const getArticleFetch = (slug) => {
 
 export const getProfileFetch = () => {
   return dispatch => {
-    const token = localStorage.token;
     if (token) {
-      return fetch(`${constant.API_BASE_URL}/user`, {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'Authorization': `Token ${token}`
-        }
-      })
+      return myBlogService.getProfileFetch(token)
         .then(resp => resp.json())
         .then(data => {
           if (data.message) {
@@ -143,15 +123,7 @@ export const userUpdateFetch = user => {
   return dispatch => {
     dispatch(startFetching());
     dispatch(setValidate(true));
-    const token = localStorage.token;
-    return fetch(`${constant.API_BASE_URL}/user`, {
-      method: "PUT",
-      headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'Authorization': `Token ${token}`,
-      },
-      body: JSON.stringify({ user })
-    })
+    return myBlogService.userUpdateFetch(token, user)
       .then( res => res.json())
       .then( data => {
         localStorage.setItem("token", data.user.token);
@@ -167,15 +139,7 @@ export const articlePostFetch = article => {
   return dispatch => {
     dispatch(startFetching());
     dispatch(setValidate(true));
-    const token = localStorage.token;
-    return fetch(`${constant.API_BASE_URL}/articles`, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-            'Authorization': `Token ${token}`,
-        },
-        body: JSON.stringify({ article })
-      })
+    return myBlogService.articlePostFetch(token, article)
         .then( res => res.json())
         .then( () => dispatch(setOffset(0)))
         .then( () => dispatch(setPage(1)))
@@ -189,15 +153,7 @@ export const articleUpdateFetch = (article, slug, offset) => {
   return dispatch => {
     dispatch(startFetching());
     dispatch(setValidate(true));
-    const token = localStorage.token;
-    return fetch(`${constant.API_BASE_URL}/articles/${slug}`, {
-      method: "PUT",
-      headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'Authorization': `Token ${token}`,
-      },
-      body: JSON.stringify({ article })
-    })
+    return myBlogService.articleUpdateFetch(token, article, slug)
       .then( res => res.json())
       .then( () => dispatch(getArticles(offset)))
       .then( () => dispatch(setValidate(false)))
@@ -208,14 +164,7 @@ export const articleUpdateFetch = (article, slug, offset) => {
 export const articleDeleteFetch = (slug, offset) => {
   return dispatch => {
     dispatch(startFetching());
-    const token = localStorage.token;
-    return fetch(`${constant.API_BASE_URL}/articles/${slug}`, {
-      method: "DELETE",
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-            'Authorization': `Token ${token}`,
-        },
-    })
+    return myBlogService.articleDeleteFetch(token, slug)
         .then(() => dispatch(setModal(false)))
         .then( () => dispatch(getArticles(offset)))
         .catch( e => console.log(e));
@@ -224,14 +173,7 @@ export const articleDeleteFetch = (slug, offset) => {
 
 export const favoriteArticle = (slug, offset) => {
   return dispatch => {
-    const token = localStorage.token;
-    return fetch(`${constant.API_BASE_URL}/articles/${slug}/favorite`, {
-      method: "POST",
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-            'Authorization': `Token ${token}`,
-        },
-    })
+    return myBlogService.favoriteArticle(token, slug)
       .then( res => res.json())
       .then( data => {
         dispatch(articleUpdateFetch(data, slug, offset));
@@ -243,19 +185,9 @@ export const favoriteArticle = (slug, offset) => {
 export const unFavoriteArticle = (slug, offset) => {
   return dispatch => {
     const token = localStorage.token;
-    return fetch(`${constant.API_BASE_URL}/articles/${slug}/favorite`, {
-      method: "DELETE",
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-            'Authorization': `Token ${token}`,
-        },
-    })
+    return myBlogService.unFavoriteArticle(token, slug)
       .then( res => res.json())
       .then( data => dispatch(articleUpdateFetch(data, slug, offset)))
       .catch( e => console.log(e));
   };
 };
-
-export const logoutUser = () => ({
-  type: constant.LOGOUT_USER,
-});

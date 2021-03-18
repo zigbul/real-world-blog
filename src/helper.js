@@ -1,6 +1,8 @@
 export const setID = () => {
    return `_${Math.random().toString(36).substr(2, 9)}`;
-}; 
+};
+
+export const token = localStorage.token;
 
 export const EMAIL_REG_EXP = /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/;
 
