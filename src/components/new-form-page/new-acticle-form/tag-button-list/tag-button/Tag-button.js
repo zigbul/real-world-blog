@@ -20,7 +20,7 @@ const TagButton = ({ isActive, addTag, deleteTag, data, id }) => {
             placeholder="Tag"
             name="tag"
             disabled={isActive}
-            onChange={(e) => {setValue(e.target.value)}}
+            onChange={(e) => setValue(e.target.value)}
             value={value}
          />
          <button 

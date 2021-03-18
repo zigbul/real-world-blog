@@ -34,6 +34,7 @@ const NewArticleForm = ({ articlePostFetch }) => {
          if (tag.id !== id) {
             return tag;
          }
+         return false;
       })
       if (tags.length === 1) {
          setTags([createTag()]);

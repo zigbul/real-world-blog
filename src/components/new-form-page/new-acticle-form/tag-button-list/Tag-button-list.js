@@ -2,7 +2,7 @@ import React from 'react';
 import TagButton from './tag-button';
 import styles from './Tag-button-list.module.scss';
 
-const TagButtonList = ({ tags, addTag, deleteTag, onValueChange }) => {
+const TagButtonList = ({ tags, addTag, deleteTag }) => {
 
    
 
@@ -16,7 +16,6 @@ const TagButtonList = ({ tags, addTag, deleteTag, onValueChange }) => {
             addTag={addTag}
             deleteTag={() => deleteTag(id)}
             isActive={index === tags.length - 1 ? false : true}
-            // onValueChange={(e) => onValueChange(e, id)}
          />
       );
    });
