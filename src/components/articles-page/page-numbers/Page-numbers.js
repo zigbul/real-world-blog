@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pagination } from 'antd';
 import { connect } from 'react-redux';
-import * as actions from '../../redux/actions';
+import * as actions from '../../../redux/actions';
 
 const PageNumbers = ({ articlesCount, setOffset, setPage, page }) => {
 

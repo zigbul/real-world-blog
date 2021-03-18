@@ -1,6 +1,6 @@
 import React from 'react';
-import ArticlesList from '../articles-list';
-import PageNumbers from '../page-numbers/Page-numbers';
+import ArticlesList from './articles-list';
+import PageNumbers from './page-numbers/';
 import { withRouter } from 'react-router-dom';
 
 const ArticlesPage = ({ history }) => {

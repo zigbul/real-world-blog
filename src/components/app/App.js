@@ -10,7 +10,7 @@ import RegistrationForm from '../registration-form';
 import LoginForm from '../login-form';
 import EditProfileForm from '../edit-profile-form';
 import NewFormPage from '../new-form-page/';
-import EditArticle from '../edit-article/';
+import EditArticle from '../edit-article-page/edit-article/';
 
 const App = ({ getArticles, offset, getProfileFetch, validate, currentUser }) => {
 

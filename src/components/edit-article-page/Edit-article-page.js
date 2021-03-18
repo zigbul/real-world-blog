@@ -1,5 +1,5 @@
 import React from 'react';
-import EditArticle from '../edit-article';
+import EditArticle from './edit-article';
 import { withRouter } from 'react-router-dom';
 
 const EditArticlePage = ({ history }) => {

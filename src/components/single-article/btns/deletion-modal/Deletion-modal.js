@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './Deletion-modal.module.scss';
-import vector from '../../assets/vector.svg';
+import vector from '../../../../assets/vector.svg';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import * as actions from '../../redux/actions';
+import * as actions from '../../../../redux/actions';
 
 const DeletionModal = ({ setModal, articleDeleteFetch, offset, singleArticle }) => {
 

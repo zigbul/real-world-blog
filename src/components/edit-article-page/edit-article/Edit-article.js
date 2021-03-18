@@ -2,23 +2,60 @@ import React, { useState } from 'react';
 import styles from './Edit-article.module.scss';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
-import * as actions from '../../redux/actions';
+import * as actions from '../../../redux/actions';
+import TagButtonList from './tag-button-list';
+import { setID } from '../../../helper';
 
 const EditArticle = ({ singleArticle, articleUpdateFetch, offset }) => {
 
-   const { body, title, slug } = singleArticle;
+   const { body, title, slug, description, tagList } = singleArticle;
 
-   const [article, setArticle] = useState({body: body, title: title});
+   const [article, setArticle] = useState({body, title, description})
+   const [tags, setTags] = useState(tagList.length === 1 ? createTag() : tagList.map(tag => createTag(tag)));
 
-   const { register, handleSubmit, errors } = useForm();
+   function createTag(tag = '') {
+      return {
+         value: tag,
+         id: setID(),
+      }
+   }
+
+   function addTag(id, value) {
+      const newArr = tags.map( tag => {
+         if(tag.id === id) {
+            return tag = {...tag, value: value};
+         }
+         return tag;
+      })
+		setTags([...newArr, createTag()]);
+      setArticle({...article, tagList: tags.map(tag => tag.value)});
+	}
+
+   function deleteTag(id) {
+      const newArr = tags.filter( tag => {
+         if (tag.id !== id) {
+            return tag;
+         }
+      })
+      if (tags.length === 1) {
+         setTags([createTag()]);
+
+      } else {
+         setTags(newArr);
+      }
+      setArticle({...article, tagList: tags.map(tag => tag.value)});
+   }
 
    const handleChange = event => {
+      event.preventDefault();
       setArticle({...article, [event.target.name]: event.target.value});
    };
 
    const onSubmit = () => {
       articleUpdateFetch(article, slug, offset);
    };
+
+   const { register, handleSubmit, errors } = useForm();
 
    return (
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -44,6 +81,7 @@ const EditArticle = ({ singleArticle, articleUpdateFetch, offset }) => {
                placeholder="Description"
                name="description"
                onChange={handleChange}
+               value={article.description}
                ref={register({ required: true, })}
             />
             {errors.description && <p className={styles["input-error"]}>Short description is required</p>}
@@ -62,27 +100,11 @@ const EditArticle = ({ singleArticle, articleUpdateFetch, offset }) => {
          </label>
          <label className={styles["input-wrapper"]}>
             <span>Tags</span>
-            <ul className={styles["tag-list"]}>
-               <div className={styles["tag-wrapper"]}>
-                  <input 
-                     type="text"
-                     placeholder="Tag"
-                     name="tag"
-                  />
-                  <button 
-                     className={styles["delete-btn"]}
-                     type="button" 
-                  >
-                     DELETE
-                  </button>
-                  <button
-                     className={styles["add-btn"]} 
-                     type="button" 
-                  >
-                     ADD
-                  </button>
-               </div>
-            </ul>
+            <TagButtonList 
+               tags={tags}
+               addTag={addTag}
+               deleteTag={deleteTag}
+            />
          </label>
          <input type="submit" className={styles.form__button} value="Send" />
       </form>

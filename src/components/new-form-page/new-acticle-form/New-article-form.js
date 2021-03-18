@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import styles from './New-article-form.module.scss';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
-import * as actions from '../../redux/actions';
-import TagButtonList from '../tag-button-list';
-import { setID } from '../../helper';
+import * as actions from '../../../redux/actions';
+import TagButtonList from './tag-button-list';
+import { setID } from '../../../helper';
 
 const NewArticleForm = ({ articlePostFetch }) => {
 
@@ -41,16 +41,6 @@ const NewArticleForm = ({ articlePostFetch }) => {
          setTags(newArr);
       }
    }
-
-   // function onValueChange(e, id) {
-   //    const newArr = tags.filter( tag => {
-   //       if (tag.id === id) {
-   //          return tag = {...tag, value: e.target.value}
-   //       }
-   //       return tag;
-   //    })
-   //    setTags(newArr);
-   // }
 
    const { register, handleSubmit, errors } = useForm();
 
@@ -109,7 +99,6 @@ const NewArticleForm = ({ articlePostFetch }) => {
                tags={tags}
                addTag={addTag}
                deleteTag={deleteTag}
-               // onValueChange={onValueChange}
             />
          </label>
          <input type="submit" className={styles.form__button} value="Send" />

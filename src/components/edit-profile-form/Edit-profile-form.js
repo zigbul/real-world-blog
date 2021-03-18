@@ -8,6 +8,7 @@ import { EMAIL_REG_EXP, AVATAR_REG_EXP } from '../../helper';
 const EditProfileForm = ({ currentUser, userUpdateFetch }) => {
 
    const [userInfo, setUserInfo] = useState(currentUser);
+   const [pass, setPass] = useState(localStorage.getItem('password'));
 
    const { register, handleSubmit, errors } = useForm();
 
@@ -15,8 +16,13 @@ const EditProfileForm = ({ currentUser, userUpdateFetch }) => {
       setUserInfo({...userInfo, [event.target.name]: event.target.value});
    };
 
+   const passChange = event => {
+      setPass(event.target.value);
+   }
+
    const onSubmit = () => {
       userUpdateFetch(userInfo);
+      localStorage.setItem('password', pass);
    };
 
    const { username, email, } = userInfo;
@@ -56,8 +62,9 @@ const EditProfileForm = ({ currentUser, userUpdateFetch }) => {
                className={errors.password && styles["input_red-border"]}
                type="password"
                placeholder="New password"
+               value={pass}
                name="password"
-               onChange={handleChange}
+               onChange={passChange}
                ref={register({ required: true, maxLength: 40, minLength: 8, })}
             />
             {errors.password && <p className={styles["input-error"]}>Your password needs to be at least 8 characters.</p>}

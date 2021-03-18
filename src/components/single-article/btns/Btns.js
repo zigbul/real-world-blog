@@ -2,8 +2,8 @@ import React from 'react';
 import styles from './btns.module.scss';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import DeletionModal from '../deletion-modal';
-import * as actions from '../../redux/actions';
+import DeletionModal from './deletion-modal';
+import * as actions from '../../../redux/actions';
 
 const Btns = ({ slug, setModal, modal }) => {
 

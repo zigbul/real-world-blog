@@ -1,5 +1,5 @@
 import React from 'react';
-import NewArticleForm from '../new-acticle-form';
+import NewArticleForm from './new-acticle-form';
 
 const NewFormPage = () => {
    return (
