@@ -10,3 +10,4 @@ export const SET_VALIDATE = "SET_VALIDATE";
 export const LOGIN_USER = "LOGIN_USER";
 export const LOGOUT_USER = "LOGOUT_USER";
 export const API_BASE_URL = "https://conduit.productionready.io/api";
+export const AVATAR_DEFAULT_URL = "https://static.productionready.io/images/smiley-cyrus.jpg";

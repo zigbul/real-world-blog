@@ -6,13 +6,14 @@ import TagList from '../../domain/tag-list';
 import Btns from './btns';
 import * as actions from '../../redux/actions';
 import Like from '../../domain/like';
+import { setAvatarURL } from '../../helper';
 
 const SingleArticle = ({ singleArticle, currentUser }) => {
 
    const { title, description, author, tagList, createdAt, favoritesCount, body, favorited, slug } = singleArticle;
    const { image, username } = author;
 
-   const btnsBlock = (username === currentUser.username) ? <Btns slug={slug} /> : null;
+   const btnsBlock = (username === currentUser.username) && <Btns slug={slug} />;
 
    return (
       <article className={styles.article}>
@@ -37,7 +38,7 @@ const SingleArticle = ({ singleArticle, currentUser }) => {
                <span className={styles["autor-block__name"]}>{ username }</span>
                <span className={styles["autor-block__date"]}>{ format(new Date(createdAt), "PP") }</span>
             </div>
-            <img src={ image } className={styles["autor-block__avatar"]} width="46px" heigh="46px" alt="avatar" />
+            <img src={ setAvatarURL(image) } className={styles["autor-block__avatar"]} width="46px" heigh="46px" alt="avatar" />
             { btnsBlock }
          </div>
          <p className={styles.article__text}>{ body }</p>

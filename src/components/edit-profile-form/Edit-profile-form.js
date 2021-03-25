@@ -4,11 +4,12 @@ import { connect } from 'react-redux';
 import * as actions from '../../redux/actions';
 import { useForm } from 'react-hook-form';
 import { EMAIL_REG_EXP, AVATAR_REG_EXP } from '../../helper';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 const EditProfileForm = ({ currentUser, userUpdateFetch }) => {
-
+ 
    const [userInfo, setUserInfo] = useState(currentUser);
-   const [pass, setPass] = useState(localStorage.getItem('password'));
+   const [pass, setPass] = useLocalStorage('password');
 
    const { register, handleSubmit, errors } = useForm();
 

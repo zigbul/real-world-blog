@@ -6,8 +6,8 @@ import { format } from 'date-fns';
 import styles from './Article.module.scss';
 import heart from '../../../../assets/heart.svg';
 import redHeart from '../../../../assets/redheart.svg';
-import defaultAvatar from '../../../../assets/defaultAvatar.svg';
 import * as actions from '../../../../redux/actions';
+import { setAvatarURL } from '../../../../helper';
 
 const Article = ({ articleData, setSingleArticle }) => {
 
@@ -40,7 +40,7 @@ const Article = ({ articleData, setSingleArticle }) => {
                <span className={styles["autor-block__name"]}>{ username }</span>
                <span className={styles["autor-block__date"]}>{ format(new Date(createdAt), "PP") }</span>
             </div>
-            <img src={ image ?? defaultAvatar } className={styles["autor-block__avatar"]} width="46px" heigh="46px" alt="avatar" />
+            <img src={setAvatarURL(image)} className={styles["autor-block__avatar"]} width="46px" heigh="46px" alt="avatar" />
          </div>
       </article>
    );

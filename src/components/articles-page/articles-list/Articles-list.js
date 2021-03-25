@@ -3,11 +3,16 @@ import { connect } from 'react-redux';
 import 'antd/dist/antd.css';
 import styles from './Articles-list.module.scss';
 import Article from './article';
+import { Spin, Space } from 'antd';
 
 const ArticlesList = ({ articles, loading }) => {
 
    if(loading) {
-      return <h1>Loading...</h1>
+      return (
+         <Space size="middle" className={styles.spiner}>
+            <Spin size="large" />
+         </Space>
+      );
    }
 
    const arrOfArticles = articles.map( (articleData) => {

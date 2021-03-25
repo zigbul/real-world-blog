@@ -171,23 +171,16 @@ export const articleDeleteFetch = (slug, offset) => {
   };
 };
 
-export const favoriteArticle = (slug, offset) => {
-  return dispatch => {
+export const favoriteArticle = (slug) => {
+  return () => {
     return myBlogService.favoriteArticle(token, slug)
-      .then( res => res.json())
-      .then( data => {
-        dispatch(articleUpdateFetch(data, slug, offset));
-      })
       .catch( e => console.log(e));
   };
 };
 
-export const unFavoriteArticle = (slug, offset) => {
-  return dispatch => {
-    const token = localStorage.token;
+export const unFavoriteArticle = (slug) => {
+  return () => {
     return myBlogService.unFavoriteArticle(token, slug)
-      .then( res => res.json())
-      .then( data => dispatch(articleUpdateFetch(data, slug, offset)))
       .catch( e => console.log(e));
   };
 };

@@ -5,13 +5,13 @@ const TagButton = ({ isActive, addTag, deleteTag, data, id }) => {
 
    const [value, setValue] = useState(data.value); 
 
-   const addButton = isActive ?  null :  <button
-                                             className={styles["add-btn"]} 
-                                             type="button"
-                                             onClick={() => addTag(id, value)} 
-                                          >
-                                             ADD
-                                          </button> 
+   const addButton = isActive && <button
+                                    className={styles["add-btn"]} 
+                                    type="button"
+                                    onClick={() => addTag(id, value)} 
+                                 >
+                                    ADD
+                                 </button> 
 
    return (
       <div className={styles["tag-wrapper"]}>

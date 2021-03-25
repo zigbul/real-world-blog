@@ -20,7 +20,7 @@ const Btns = ({ slug, setModal, modal }) => {
          >
             Delete
          </button>
-         {modal ? <DeletionModal /> : null}
+         {modal && <DeletionModal />}
          <Link to={`/articles/${slug}/edit`} className={styles["edit-btn"]}>
             Edit
          </Link>

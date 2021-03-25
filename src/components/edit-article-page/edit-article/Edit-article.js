@@ -11,7 +11,14 @@ const EditArticle = ({ singleArticle, articleUpdateFetch, offset }) => {
    const { body, title, slug, description, tagList } = singleArticle;
 
    const [article, setArticle] = useState({body, title, description})
-   const [tags, setTags] = useState(tagList.length === 1 ? createTag() : tagList.map(tag => createTag(tag)));
+   const [tags, setTags] = useState(setDefaultTags(tagList));
+
+   function setDefaultTags(tagList) {
+      if (tagList.length === 0) {
+         return [createTag()];
+      }
+      return tagList.map(tag => createTag(tag))
+   }
 
    function createTag(tag = '') {
       return {
@@ -34,8 +41,9 @@ const EditArticle = ({ singleArticle, articleUpdateFetch, offset }) => {
    function deleteTag(id) {
       const newArr = tags.filter( tag => {
          if (tag.id !== id) {
-            return tag;
+            return true;
          }
+         return false
       })
       if (tags.length === 1) {
          setTags([createTag()]);
